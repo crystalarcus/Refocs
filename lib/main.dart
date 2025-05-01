@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:refocus/settings_screen.dart';
 import 'package:refocus/widgets/time_picker.dart';
 
 void main() {
   runApp(MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+  // ignore: library_private_types_in_public_api
+  static _MainAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MainAppState>()!;
+}
+
+class _MainAppState extends State<MainApp> {
+  ThemeMode themeMode = ThemeMode.light;
+  void changeTheme(ThemeMode mode) {
+    setState(() {
+      themeMode = mode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder:
-          (context, child) => MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-            child: child ?? SizedBox(),
-          ),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purpleAccent),
-      ),
+      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light(),
+      themeMode: themeMode,
       home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -33,7 +45,15 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Time Frequency"),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings_outlined)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsScreen()),
+              );
+            },
+            icon: Icon(Icons.settings_outlined),
+          ),
         ],
       ),
       body: Column(
