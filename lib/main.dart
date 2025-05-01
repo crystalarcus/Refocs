@@ -27,6 +27,11 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // builder:
+      //     (context, child) => MediaQuery(
+      //       data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+      //       child: child ?? SizedBox(),
+      //     ),
       darkTheme: ThemeData.dark(),
       theme: ThemeData.light(),
       themeMode: themeMode,
