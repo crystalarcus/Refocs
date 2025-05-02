@@ -226,9 +226,7 @@ class _TimePickerModel extends InheritedModel<_TimePickerAspect> {
 }
 
 class _TimePickerHeader extends StatelessWidget {
-  const _TimePickerHeader({required this.helpText});
-
-  final String helpText;
+  const _TimePickerHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -241,84 +239,47 @@ class _TimePickerHeader extends StatelessWidget {
     final _HourDialType hourDialType = _TimePickerModel.hourDialTypeOf(context);
     switch (_TimePickerModel.orientationOf(context)) {
       case Orientation.portrait:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        return Row(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsetsDirectional.only(
-                bottom: _TimePickerModel.useMaterial3Of(context) ? 20 : 24,
-              ),
-              child: Text(
-                helpText,
-                style:
-                    _TimePickerModel.themeOf(context).helpTextStyle ??
-                    _TimePickerModel.defaultThemeOf(context).helpTextStyle,
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                if (hourDialType == _HourDialType.twelveHour &&
-                    timeOfDayFormat == TimeOfDayFormat.a_space_h_colon_mm)
-                  const _DayPeriodControl(),
-                Expanded(
-                  child: Row(
-                    // Hour/minutes should not change positions in RTL locales.
-                    textDirection: TextDirection.ltr,
-                    children: <Widget>[
-                      const Expanded(child: _HourControl()),
-                      _TimeSelectorSeparator(timeOfDayFormat: timeOfDayFormat),
-                      const Expanded(child: _MinuteControl()),
-                    ],
-                  ),
-                ),
-                if (hourDialType == _HourDialType.twelveHour &&
-                    timeOfDayFormat !=
-                        TimeOfDayFormat.a_space_h_colon_mm) ...<Widget>[
-                  const SizedBox(width: 12),
-                  const _DayPeriodControl(),
+            if (hourDialType == _HourDialType.twelveHour &&
+                timeOfDayFormat == TimeOfDayFormat.a_space_h_colon_mm)
+              const _DayPeriodControl(),
+            Expanded(
+              child: Row(
+                // Hour/minutes should not change positions in RTL locales.
+                textDirection: TextDirection.ltr,
+                children: <Widget>[
+                  const Expanded(child: _HourControl()),
+                  _TimeSelectorSeparator(timeOfDayFormat: timeOfDayFormat),
+                  const Expanded(child: _MinuteControl()),
                 ],
-              ],
+              ),
             ),
           ],
         );
       case Orientation.landscape:
         return SizedBox(
           width: _kTimePickerHeaderLandscapeWidth,
-          child: Stack(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                helpText,
-                style:
-                    _TimePickerModel.themeOf(context).helpTextStyle ??
-                    _TimePickerModel.defaultThemeOf(context).helpTextStyle,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (hourDialType == _HourDialType.twelveHour &&
-                      timeOfDayFormat == TimeOfDayFormat.a_space_h_colon_mm)
-                    const _DayPeriodControl(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: hourDialType == _HourDialType.twelveHour ? 12 : 0,
-                    ),
-                    child: Row(
-                      // Hour/minutes should not change positions in RTL locales.
-                      textDirection: TextDirection.ltr,
-                      children: <Widget>[
-                        const Expanded(child: _HourControl()),
-                        _TimeSelectorSeparator(
-                          timeOfDayFormat: timeOfDayFormat,
-                        ),
-                        const Expanded(child: _MinuteControl()),
-                      ],
-                    ),
-                  ),
-                  if (hourDialType == _HourDialType.twelveHour &&
-                      timeOfDayFormat != TimeOfDayFormat.a_space_h_colon_mm)
-                    const _DayPeriodControl(),
-                ],
+              if (hourDialType == _HourDialType.twelveHour &&
+                  timeOfDayFormat == TimeOfDayFormat.a_space_h_colon_mm)
+                const _DayPeriodControl(),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: hourDialType == _HourDialType.twelveHour ? 12 : 0,
+                ),
+                child: Row(
+                  // Hour/minutes should not change positions in RTL locales.
+                  textDirection: TextDirection.ltr,
+                  children: <Widget>[
+                    const Expanded(child: _HourControl()),
+                    _TimeSelectorSeparator(timeOfDayFormat: timeOfDayFormat),
+                    const Expanded(child: _MinuteControl()),
+                  ],
+                ),
               ),
             ],
           ),
@@ -2037,30 +1998,9 @@ class _TimePickerInputState extends State<_TimePickerInput>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsetsDirectional.only(
-              bottom: _TimePickerModel.useMaterial3Of(context) ? 20 : 24,
-            ),
-            child: Text(
-              widget.helpText,
-              style:
-                  _TimePickerModel.themeOf(context).helpTextStyle ??
-                  _TimePickerModel.defaultThemeOf(context).helpTextStyle,
-            ),
-          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (!use24HourDials &&
-                  timeOfDayFormat ==
-                      TimeOfDayFormat.a_space_h_colon_mm) ...<Widget>[
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(end: 12),
-                  child: _DayPeriodControl(
-                    onPeriodChanged: _handleDayPeriodChanged,
-                  ),
-                ),
-              ],
               Expanded(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -2069,7 +2009,7 @@ class _TimePickerInputState extends State<_TimePickerInput>
                   children: <Widget>[
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
@@ -2103,7 +2043,7 @@ class _TimePickerInputState extends State<_TimePickerInput>
                     _TimeSelectorSeparator(timeOfDayFormat: timeOfDayFormat),
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
@@ -2136,16 +2076,6 @@ class _TimePickerInputState extends State<_TimePickerInput>
                   ],
                 ),
               ),
-              if (!use24HourDials &&
-                  timeOfDayFormat !=
-                      TimeOfDayFormat.a_space_h_colon_mm) ...<Widget>[
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 12),
-                  child: _DayPeriodControl(
-                    onPeriodChanged: _handleDayPeriodChanged,
-                  ),
-                ),
-              ],
             ],
           ),
           if (hourHasError.value || minuteHasError.value)
@@ -2769,6 +2699,8 @@ class _TimePickerWidgetState extends State<TimePickerWidget>
       padding: EdgeInsetsDirectional.only(start: theme.useMaterial3 ? 0 : 4),
       child: Row(
         children: <Widget>[
+          Text("Enter Time", style: TextStyle(fontSize: 20)),
+          Spacer(),
           if (_entryMode.value == TimePickerEntryMode.dial ||
               _entryMode.value == TimePickerEntryMode.input)
             IconButton(
@@ -2851,31 +2783,33 @@ class _TimePickerWidgetState extends State<TimePickerWidget>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      actions,
                       Expanded(
                         child: Form(
                           key: _formKey,
                           autovalidateMode: _autovalidateMode.value,
-                          child: _TimePicker(
-                            time: widget.initialTime,
-                            onTimeChanged: _handleTimeChanged,
-                            helpText: widget.helpText,
-                            cancelText: widget.cancelText,
-                            confirmText: widget.confirmText,
-                            errorInvalidText: widget.errorInvalidText,
-                            hourLabelText: widget.hourLabelText,
-                            minuteLabelText: widget.minuteLabelText,
-                            restorationId: 'time_picker',
-                            entryMode: _entryMode.value,
-                            orientation: widget.orientation,
-                            onEntryModeChanged: _handleEntryModeChanged,
-                            switchToInputEntryModeIcon:
-                                widget.switchToInputEntryModeIcon,
-                            switchToTimerEntryModeIcon:
-                                widget.switchToTimerEntryModeIcon,
+                          child: Center(
+                            child: _TimePicker(
+                              time: widget.initialTime,
+                              onTimeChanged: _handleTimeChanged,
+                              helpText: widget.helpText,
+                              cancelText: widget.cancelText,
+                              confirmText: widget.confirmText,
+                              errorInvalidText: widget.errorInvalidText,
+                              hourLabelText: widget.hourLabelText,
+                              minuteLabelText: widget.minuteLabelText,
+                              restorationId: 'time_picker',
+                              entryMode: _entryMode.value,
+                              orientation: widget.orientation,
+                              onEntryModeChanged: _handleEntryModeChanged,
+                              switchToInputEntryModeIcon:
+                                  widget.switchToInputEntryModeIcon,
+                              switchToTimerEntryModeIcon:
+                                  widget.switchToTimerEntryModeIcon,
+                            ),
                           ),
                         ),
                       ),
-                      actions,
                     ],
                   ),
                 ),
@@ -3189,17 +3123,10 @@ class _TimePickerState extends State<_TimePicker> with RestorationMixin {
       HourFormat.h => _HourDialType.twelveHour,
     };
 
-    final String helpText;
     final Widget picker;
     switch (widget.entryMode) {
       case TimePickerEntryMode.dial:
       case TimePickerEntryMode.dialOnly:
-        helpText =
-            widget.helpText ??
-            (theme.useMaterial3
-                ? localizations.timePickerDialHelpText
-                : localizations.timePickerDialHelpText.toUpperCase());
-
         final EdgeInsetsGeometry dialPadding = switch (orientation) {
           Orientation.portrait => const EdgeInsets.only(
             left: 12,
@@ -3233,25 +3160,14 @@ class _TimePickerState extends State<_TimePicker> with RestorationMixin {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: theme.useMaterial3 ? 0 : 16,
-                  ),
-                  child: _TimePickerHeader(helpText: helpText),
-                ),
+                _TimePickerHeader(),
+
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       // Dial grows and shrinks with the available space.
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: theme.useMaterial3 ? 0 : 16,
-                          ),
-                          child: dial,
-                        ),
-                      ),
+                      Expanded(child: dial),
                     ],
                   ),
                 ),
@@ -3268,7 +3184,7 @@ class _TimePickerState extends State<_TimePicker> with RestorationMixin {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        _TimePickerHeader(helpText: helpText),
+                        _TimePickerHeader(),
                         Expanded(child: dial),
                       ],
                     ),

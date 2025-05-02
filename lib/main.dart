@@ -63,11 +63,14 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TimePickerWidget(
-            initialTime: TimeOfDay.fromDateTime(
-              DateTime(2025, 1, 1, 10, 0, 0, 0, 0),
+          Center(
+            child: TimePickerWidget(
+              initialTime: TimeOfDay.fromDateTime(
+                DateTime(2025, 1, 1, 10, 0, 0, 0, 0),
+              ),
             ),
           ),
+
           Spacer(),
           SizedBox(
             height: 56,

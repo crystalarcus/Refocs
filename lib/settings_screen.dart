@@ -37,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           (context) => Dialog(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height - 300,
+                maxHeight: MediaQuery.of(context).size.height * 3 / 4,
                 maxWidth: MediaQuery.of(context).size.width - 86,
               ),
               child: Column(
